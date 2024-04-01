@@ -1,35 +1,27 @@
 import { useState } from 'react'
+import { NewTodoForm } from './NewTodoForm'
 import './App.css'
 
 function App() {
-
-  const [newItem, setNewItem] = useState("");
   const [todos, setTodos] = useState([]);
 
-
-  // 點擊 form 裡面的 button 時不做任何事，使不會重新刷頁面，使 input 內的資料不會被清空
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const addTodo = (title) => {
     // 因為不能直接修改 todos 變數，用擴展運算子淺拷貝一個 todos，並且增加物件賦值
     // setTodos() 裡面如果不是放 function 而是直接放一個陣列去更新 todos 的話，因為裡面有用到擴展運算子去抓 todos 的初始值，每次都會從頭去抓 todos 的初始 state，而不是抓到前一次 setTodos 執行完後的 todos 的最新的結果
     // 若想用執行後的最新 todo 去更新新一批的陣列，要在 setTodos() 裡面再放一個 function，function 本身要 return ，function 代入的參數則是上一次異動後的最新 todos，讓 setTodos() 每一次運算都能接續用上一次最新的 todos 去執行，
 
     setTodos((currentTodos) => {
       return[
-        ...currentTodos, 
-        {
+          ...currentTodos, 
+          {
           id: crypto.randomUUID(),
-          title: newItem,
+          title,
           completed: false
-        }
-      ]
-    });
+          }
+        ]
+      });
+}
 
-    // 按下新增按鈕後就清空 input 裡面的 value
-    setNewItem('');
-    
-  }
 
   // 將被點擊到的 todo 的 checked 狀態，更新進去 todos state 裡面
   // 拿現在點擊到的 todo 跟 todos 陣列裡面的 todo 相比較
@@ -65,16 +57,7 @@ function App() {
 
   return (
     <div className="container">
-      <form onSubmit={handleSubmit} className='new-item-form'>
-        <div className='form-row'>
-          <label htmlFor='item' className='form-title'>New Item</label>
-          <input 
-          value={newItem} 
-          onChange={ e => setNewItem(e.target.value) }
-          type='text' id='item'/>
-        </div>
-        <button className="add">Add</button>
-      </form>
+      <NewTodoForm onSubmit={addTodo}/>
       <h1 className="header">To Do List</h1>
       <ul className="list">
         { todos.length === 0 && <span className='no-todos'>No Todos</span> }
