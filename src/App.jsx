@@ -1,11 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import NewTodoForm from './NewTodoForm'
 import TodoList from './ToDoList';
 import './App.css'
 
 
 function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    const localValue = localStorage.getItem('ITEMS');
+    if (localValue === null) return []
+    return JSON.parse(localValue)
+
+  });
+
+  useEffect(() => {
+    localStorage.setItem('ITEMS', JSON.stringify(todos))
+  },[todos]);
 
   const addTodo = (title) => {
     // 因為不能直接修改 todos 變數，用擴展運算子淺拷貝一個 todos，並且增加物件賦值
