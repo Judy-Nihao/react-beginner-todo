@@ -1,26 +1,21 @@
 import { useState } from 'react'
-// import NewTodoForm from './NewTodoForm'
+import NewTodoForm from './NewTodoForm'
 // import TodoList from './ToDoList';
 import './App.css'
 
 
 function App() {
-
-  const [newItem, setNewItem] = useState('');
   const [todos, setTodos] = useState([]);
-  
 
-  const handleSubmit = (e) =>{
-    e.preventDefault();
+  const addTodoFunc = (newItem) => {
     setTodos((prev)=>{
-      return [...prev,{
-        title: newItem,
-        id: crypto.randomUUID(),
-        completed: false
-      }]
-    })
-
-    setNewItem('');
+          return [...prev,{
+            title: newItem,
+            id: crypto.randomUUID(),
+            completed: false
+          }]
+        })
+    
   }
 
   const toggleTodo = (id, completed) => {
@@ -48,13 +43,7 @@ function App() {
 
   return (
     <div className="container">
-      <form className='new-item-form' onSubmit={handleSubmit} >
-          <div className='form-row'>
-            <label htmlFor='item' className='form-title'>New Item</label>
-            <input type='text' id='item' value={newItem} onChange={ e => setNewItem(e.target.value)}/> 
-          </div>
-          <button className="add">Add</button>
-      </form>
+      <NewTodoForm addTodo={addTodoFunc}/>
       <h1 className="header">To Do List</h1>
       <ul className="list">
       { todos.length === 0 && <span className='no-todos'>No Todos</span>}
