@@ -1,17 +1,24 @@
-// import { useEffect, useState } from 'react'
+import { useState } from 'react'
 // import NewTodoForm from './NewTodoForm'
 // import TodoList from './ToDoList';
 import './App.css'
 
 
 function App() {
- 
+
+  const [todo, setTodo] = useState('');
+  const [todos, setTodos] = useState([]);
+  
+  const updateTodo = (e) => {
+    setTodo(e.target.value);
+  }
+
   return (
     <div className="container">
       <form className='new-item-form'>
           <div className='form-row'>
-          <label htmlFor='item' className='form-title'>New Item</label>
-          <input type='text' id='item'/>
+            <label htmlFor='item' className='form-title'>New Item</label>
+            <input type='text' id='item' value={todo} onChange={updateTodo}/>
           </div>
           <button className="add">Add</button>
       </form>
