@@ -34,6 +34,16 @@ function App() {
     })
   }
 
+  const deleteTodo = (id) => {
+   setTodos((prevTodos) => {
+    return prevTodos.filter((todo) => {
+      if(id !== todo.id){
+        return todo
+      }
+    })
+   })
+  }
+
   console.log(todos);
 
   return (
@@ -50,7 +60,7 @@ function App() {
         {todos.map((todo)=>{
           return  <li key={todo.id}>
           <label><input type="checkbox" checked={todo.completed} onChange={e => toggleTodo(todo.id, e.target.checked)}/>{todo.title}</label>
-          <button className="btn btn-danger">Delete</button>
+          <button className="btn btn-danger" onClick={()=> {deleteTodo(todo.id)}}>Delete</button>
         </li>
         })}
       </ul>
