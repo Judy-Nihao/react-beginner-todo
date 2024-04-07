@@ -1,16 +1,21 @@
 import { useState } from 'react'
 import NewTodoForm from './NewTodoForm'
-// import TodoList from './ToDoList';
+import TodoList from './ToDoList';
 import './App.css'
+import { useEffect } from 'react';
 
 
 function App() {
   const [todos, setTodos] = useState([]);
 
-  const addTodoFunc = (newItem) => {
+  useEffect(()=>{
+    console.log(todos)
+  },[todos])
+
+  const addTodoFunc = (title) => {
     setTodos((prev)=>{
           return [...prev,{
-            title: newItem,
+            title: title,
             id: crypto.randomUUID(),
             completed: false
           }]
@@ -39,21 +44,12 @@ function App() {
    })
   }
 
-  console.log(todos);
 
   return (
     <div className="container">
       <NewTodoForm addTodo={addTodoFunc}/>
       <h1 className="header">To Do List</h1>
-      <ul className="list">
-      { todos.length === 0 && <span className='no-todos'>No Todos</span>}
-        {todos.map((todo)=>{
-          return  <li key={todo.id}>
-          <label><input type="checkbox" checked={todo.completed} onChange={e => toggleTodo(todo.id, e.target.checked)}/>{todo.title}</label>
-          <button className="btn btn-danger" onClick={()=> {deleteTodo(todo.id)}}>Delete</button>
-        </li>
-        })}
-      </ul>
+      <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
     </div>
   )
 }
