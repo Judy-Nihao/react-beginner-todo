@@ -6,10 +6,16 @@ import { useEffect } from 'react';
 
 
 function App() {
-  const [todos, setTodos] = useState([]);
+
+  // 讓預設 state 是去 localStorage 裡面抓
+  const [todos, setTodos] = useState(()=>{
+    let localItemValue = localStorage.getItem('ITEMS');
+    if (localItemValue == null) return []
+    return JSON.parse(localItemValue)
+  });
 
   useEffect(()=>{
-    console.log(todos)
+    localStorage.setItem('ITEMS', JSON.stringify(todos));
   },[todos])
 
   const addTodoFunc = (title) => {
